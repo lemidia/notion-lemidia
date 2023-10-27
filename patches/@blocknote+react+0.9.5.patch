@@ -1,0 +1,39 @@
+diff --git a/node_modules/@blocknote/react/src/SideMenu/components/DefaultButtons/DragHandle.tsx b/node_modules/@blocknote/react/src/SideMenu/components/DefaultButtons/DragHandle.tsx
+index 8c457fc..431bc75 100644
+--- a/node_modules/@blocknote/react/src/SideMenu/components/DefaultButtons/DragHandle.tsx
++++ b/node_modules/@blocknote/react/src/SideMenu/components/DefaultButtons/DragHandle.tsx
+@@ -16,7 +16,7 @@ export const DragHandle = <BSchema extends BlockSchema>(
+       onOpen={props.freezeMenu}
+       onClose={props.unfreezeMenu}
+       width={100}
+-      position={"left"}>
++      position={"right"}>
+       <Menu.Target>
+         <div
+           draggable="true"
+diff --git a/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DefaultDragHandleMenu.tsx b/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DefaultDragHandleMenu.tsx
+index 0e66af7..bd7f95a 100644
+--- a/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DefaultDragHandleMenu.tsx
++++ b/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DefaultDragHandleMenu.tsx
+@@ -8,7 +8,7 @@ export const DefaultDragHandleMenu = <BSchema extends BlockSchema>(
+   props: DragHandleMenuProps<BSchema>
+ ) => (
+   <DragHandleMenu>
+-    <RemoveBlockButton {...props}>Delete</RemoveBlockButton>
++    <RemoveBlockButton {...props}>Remove</RemoveBlockButton>
+     <BlockColorsButton {...props}>Colors</BlockColorsButton>
+   </DragHandleMenu>
+ );
+diff --git a/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DragHandleMenu.tsx b/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DragHandleMenu.tsx
+index b67dd98..6bdc8d5 100644
+--- a/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DragHandleMenu.tsx
++++ b/node_modules/@blocknote/react/src/SideMenu/components/DragHandleMenu/DragHandleMenu.tsx
+@@ -13,7 +13,7 @@ export const DragHandleMenu = (props: { children: ReactNode }) => {
+   });
+ 
+   return (
+-    <Menu.Dropdown className={classes.root} style={{ overflow: "visible" }}>
++    <Menu.Dropdown className={classes.root}  style={{ overflow: "visible" }}>
+       {props.children}
+     </Menu.Dropdown>
+   );
