@@ -22,6 +22,8 @@ const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
   const { onOpen, onReplace } = useCoverImageStore();
   const { documentId } = useParams();
 
+  console.log(url);
+
   const update = useMutation(api.documents.update);
   const deleteStorageId = useMutation(api.images.deleteStorageId);
 

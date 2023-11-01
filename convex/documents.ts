@@ -274,6 +274,12 @@ export const getById = query({
       });
     }
 
+    // If this document has storageId for cover-image then get the URL for a file in storage and assigns URL to its field "coverImage" as value.
+    if (document.storageId) {
+      document.coverImage =
+        (await ctx.storage.getUrl(document.storageId)) || undefined;
+    }
+
     if (document.isPublished && !document.isArchived) {
       return document;
     }
@@ -285,12 +291,6 @@ export const getById = query({
       throw new ConvexError({
         message: "Note is not published.",
       });
-    }
-
-    // If this document has storageId for cover-image then serve URL for cover-image
-    if (document.storageId) {
-      document.coverImage =
-        (await ctx.storage.getUrl(document.storageId)) || undefined;
     }
 
     return document;
