@@ -14,37 +14,42 @@ import { Skeleton } from "./ui/skeleton";
 
 interface CoverImageProps {
   url?: string;
+  storageId?: string;
   preview?: boolean;
 }
 
-const CoverImage = ({ url, preview }: CoverImageProps) => {
+const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
   const { onOpen, onReplace } = useCoverImageStore();
   const { documentId } = useParams();
 
-  const { edgestore } = useEdgeStore();
-
   const update = useMutation(api.documents.update);
+  const deleteStorageId = useMutation(api.images.deleteStorageId);
 
-  const onCoverImageRemove = async (url: string) => {
-    let status: string | undefined;
-    try {
-      status = await update({
-        id: documentId as Id<"documents">,
-        coverImage: "undefined",
-      });
+  const onCoverImageRemove = async () => {
+    if (!storageId) return;
+    // Remove storageId for this documents
+    await deleteStorageId({ storageId });
+    await update({ id: documentId as Id<"documents">, storageId: "undefined" });
 
-      await edgestore.publicFiles.delete({
-        url: url,
-      });
-    } catch (err) {
-      // if storage uploading was fail
-      if (status) {
-        await update({
-          id: documentId as Id<"documents">,
-          coverImage: url,
-        });
-      }
-    }
+    // let status: string | undefined;
+    // try {
+    //   status = await update({
+    //     id: documentId as Id<"documents">,
+    //     coverImage: "undefined",
+    //   });
+
+    //   await edgestore.publicFiles.delete({
+    //     url: url,
+    //   });
+    // } catch (err) {
+    //   // if storage uploading was fail
+    //   if (status) {
+    //     await update({
+    //       id: documentId as Id<"documents">,
+    //       coverImage: url,
+    //     });
+    //   }
+    // }
   };
   return (
     <div
@@ -55,10 +60,10 @@ const CoverImage = ({ url, preview }: CoverImageProps) => {
       )}
     >
       {!!url && <Image src={url} fill alt="Cover" className="object-cover" />}
-      {url && !preview && (
+      {storageId && !preview && (
         <div className="md:opacity-0 opacity-100 group-hover:opacity-100  absolute bottom-5 right-5 flex items-center gap-x-2">
           <Button
-            onClick={() => onReplace(url)}
+            onClick={() => onReplace(storageId)}
             size={"sm"}
             variant={"outline"}
             className="text-xs flex-shrink-0"
@@ -67,7 +72,7 @@ const CoverImage = ({ url, preview }: CoverImageProps) => {
             Change Cover
           </Button>
           <Button
-            onClick={() => onCoverImageRemove(url)}
+            onClick={() => onCoverImageRemove()}
             size={"sm"}
             variant={"outline"}
             className="text-xs flex-shrink-0"

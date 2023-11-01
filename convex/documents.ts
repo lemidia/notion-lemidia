@@ -1,6 +1,7 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
+import { api } from "./_generated/api";
 
 export const getSidebar = query({
   args: {
@@ -182,7 +183,7 @@ export const restore = mutation({
   },
 });
 
-// remove the note permanently and for also its children recursively
+// Remove the note permanently and for also its children recursively
 export const remove = mutation({
   args: { id: v.id("documents") },
   handler: async (ctx, args) => {
@@ -204,7 +205,15 @@ export const remove = mutation({
       throw new Error("Unauthorized");
     }
 
+    // Delete the note
     await ctx.db.delete(args.id);
+
+    // Schedule deleting storageId for cover-image related to this note
+    if (existingDocument.storageId) {
+      await ctx.scheduler.runAfter(0, api.images.deleteStorageId, {
+        storageId: existingDocument.storageId,
+      });
+    }
 
     const recursiveRemove = async (documentId: Id<"documents">) => {
       const childDocuments = await ctx.db
@@ -216,6 +225,12 @@ export const remove = mutation({
 
       for (const child of childDocuments) {
         await ctx.db.delete(child._id);
+        // Schedule deleting storageId for cover-image related to this child note
+        if (child.storageId) {
+          await ctx.scheduler.runAfter(0, api.images.deleteStorageId, {
+            storageId: child.storageId,
+          });
+        }
         recursiveRemove(child._id);
       }
     };
@@ -272,6 +287,12 @@ export const getById = query({
       });
     }
 
+    // If this document has storageId for cover-image then serve URL for cover-image
+    if (document.storageId) {
+      document.coverImage =
+        (await ctx.storage.getUrl(document.storageId)) || undefined;
+    }
+
     return document;
   },
 });
@@ -284,6 +305,7 @@ export const update = mutation({
     coverImage: v.optional(v.string()),
     icon: v.optional(v.string()),
     isPublished: v.optional(v.boolean()),
+    storageId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -306,12 +328,14 @@ export const update = mutation({
       throw new Error("Unauthorized");
     }
 
+    // Unset icon field
     if (rest.icon === "undefined") {
       rest.icon = undefined;
     }
 
-    if (rest.coverImage === "undefined") {
-      rest.coverImage = undefined;
+    // Unset storageId field
+    if (rest.storageId === "undefined") {
+      rest.storageId = undefined;
     }
 
     // Do patch with given args. (rest)

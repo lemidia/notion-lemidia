@@ -43,7 +43,7 @@ const Document = ({ params: { documentId } }: DocumentProps) => {
 
   return (
     <div className="pb-40 overflow-x-hidden">
-      <CoverImage url={document.coverImage} />
+      <CoverImage url={document.coverImage} storageId={document.storageId} />
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto w-full space-y-8">
         <Toolbar initialData={document} />
         <Editor documentId={documentId} initialContent={document.content} />
