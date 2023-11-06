@@ -77,7 +77,7 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
           size={"sm"}
           className="font-semibold h-auto p-1 hover:bg-primary/10"
         >
-          <span className="truncate nt-semibold">{initialData?.title}</span>
+          <span className="truncate">{initialData?.title}</span>
         </Button>
       )}
     </div>

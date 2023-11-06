@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { ImageIcon, X } from "lucide-react";
+import { RefreshCcw, X } from "lucide-react";
 import { useCoverImageStore } from "@/hooks/useCoverImageStore";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -32,6 +32,8 @@ const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
     // Remove storageId for this documents
     await deleteStorageId({ storageId });
     await update({ id: documentId as Id<"documents">, storageId: "undefined" });
+
+    // Legacy code
 
     // let status: string | undefined;
     // try {
@@ -63,24 +65,26 @@ const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
     >
       {!!url && <Image src={url} fill alt="Cover" className="object-cover" />}
       {storageId && !preview && (
-        <div className="md:opacity-0 opacity-100 group-hover:opacity-100  absolute bottom-5 right-5 flex items-center gap-x-2">
+        <div className="md:opacity-0 opacity-100 group-hover:opacity-100  absolute bottom-3 right-3 flex items-center gap-x-3">
           <Button
             onClick={() => onReplace(storageId)}
             size={"sm"}
-            variant={"outline"}
-            className="text-xs flex-shrink-0"
+            variant={"secondary"}
+            className="text-xs flex-shrink-0 px-2 sm:px-3 bg-secondary/70"
+            aria-label="Change cover image"
           >
-            <ImageIcon className="mr-2 w-5 h-5" />
-            Change Cover
+            <RefreshCcw className="w-5 h-5" />
+            <span className="ml-2 hidden sm:inline">Change Cover</span>
           </Button>
           <Button
             onClick={() => onCoverImageRemove()}
             size={"sm"}
-            variant={"outline"}
-            className="text-xs flex-shrink-0"
+            variant={"secondary"}
+            className="text-xs flex-shrink-0 px-2 sm:px-3 bg-secondary/70"
+            aria-label="Remove cover image"
           >
-            <X className="mr-2 w-5 h-5" />
-            Remove Cover
+            <X className="w-5 h-5" />
+            <span className="ml-2 hidden sm:inline">Remove Cover</span>
           </Button>
         </div>
       )}
