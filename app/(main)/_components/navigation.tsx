@@ -57,6 +57,7 @@ function Navigation() {
     isResizingRef.current = true;
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    document.body.style.cursor = "ew-resize";
   };
 
   const handleMouseMove = (event: MouseEvent) => {
@@ -80,6 +81,7 @@ function Navigation() {
     isResizingRef.current = false;
     document.removeEventListener("mouseup", handleMouseUp);
     document.removeEventListener("mousemove", handleMouseMove);
+    document.body.style.cursor = "auto";
   };
 
   // open side bar on mobile & reset side bar size on desktop
@@ -105,9 +107,9 @@ function Navigation() {
       setIsCollapsed(true);
       setIsResetting(true);
 
-      sidebarRef.current.style.width = "0";
+      sidebarRef.current.style.width = "0px";
       navbarRef.current.style.setProperty("width", "100%");
-      navbarRef.current.style.setProperty("left", "0");
+      navbarRef.current.style.setProperty("left", "0px");
 
       setTimeout(() => setIsResetting(false), 300);
     }
@@ -181,12 +183,14 @@ function Navigation() {
           <PopoverTrigger className="w-full mt-6">
             <Item label="Trash" icon={Trash} />
           </PopoverTrigger>
-          <PopoverContent
-            side={isMobile ? "bottom" : "right"}
-            className="p-2 w-72 min-h-[200px]"
-          >
-            <TrashBox />
-          </PopoverContent>
+          {isMobile && isCollapsed ? null : (
+            <PopoverContent
+              side={isMobile ? "bottom" : "right"}
+              className="p-2 w-72 min-h-[190px] mx-2"
+            >
+              <TrashBox />
+            </PopoverContent>
+          )}
         </Popover>
 
         {/* For adjusting width of Sidebar */}
@@ -202,7 +206,7 @@ function Navigation() {
       <div
         ref={navbarRef}
         className={cn(
-          "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
+          "fixed top-0 z-[99999] left-60 w-[calc(100%-240px)]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "left-0 w-full",
           isMobile && !isCollapsed && "invisible overflow-x-hidden"

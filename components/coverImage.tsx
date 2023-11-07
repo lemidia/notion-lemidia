@@ -19,10 +19,8 @@ interface CoverImageProps {
 }
 
 const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
-  const { onOpen, onReplace } = useCoverImageStore();
+  const { onReplace } = useCoverImageStore();
   const { documentId } = useParams();
-
-  console.log(url);
 
   const update = useMutation(api.documents.update);
   const deleteStorageId = useMutation(api.images.deleteStorageId);
@@ -59,7 +57,7 @@ const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
     <div
       className={cn(
         "relative w-full group",
-        !url && "h-[8vh]",
+        !url && "h-[5vh]",
         url && "bg-muted h-[25vh] md:h-[30vh]"
       )}
     >

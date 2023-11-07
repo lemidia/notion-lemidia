@@ -79,11 +79,11 @@ function Publish({ initialData }: PublishProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant={"ghost"} size={"sm"} className="h-8 text-sm px-2">
-          Publish
+        <Button variant={"ghost"} size={"sm"} className="h-8 text-sm gap-x-2">
           {initialData.isPublished && (
-            <Globe className="text-sky-500 w-5 h-5 ml-2 animate-pulse" />
+            <Globe className="text-sky-500 w-5 h-5 animate-pulse" />
           )}
+          Publish
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72" align="end" alignOffset={8} forceMount>
@@ -144,7 +144,7 @@ function Publish({ initialData }: PublishProps) {
 }
 
 Publish.Skeleton = function PublishSkeleton() {
-  return <Skeleton className="h-7 w-[92px] rounded-md" />;
+  return <Skeleton className="h-7 w-[70px] rounded-md" />;
 };
 
 export default Publish;

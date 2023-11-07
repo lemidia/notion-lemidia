@@ -66,53 +66,56 @@ function Toolbar({ initialData, preview }: ToolbarProps) {
   };
 
   return (
-    <div className="pl-[54px] group relative">
-      {/* Note has an Emoji and is NOT viewable publicly */}
-      {!!initialData.icon && !preview && (
-        <div className="flex items-center gap-x-2 group/icon pt-6">
-          <IconPicker onChange={onIconSelect}>
-            <p className="text-6xl hover:opacity-75 transition">
-              {initialData.icon}
-            </p>
-          </IconPicker>
-          <Button
-            onClick={onDeleteIcon}
-            className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground"
-            variant={"outline"}
-            size="icon"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
+    <div className="pl-[54px] relative">
       {/* Note has an Emoji and is viewable publicly */}
       {!!initialData.icon && preview && (
-        <p className="text-6xl pt-6">{initialData.icon}</p>
+        <p className="text-6xl py-5">{initialData.icon}</p>
       )}
-      <div className="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4">
-        {!initialData.icon && !preview && (
-          <IconPicker onChange={onIconSelect} asChild>
+      {!preview && (
+        <div className="group flex items-center gap-x-2.5 py-5">
+          {/* Note has an Emoji and is NOT viewable publicly */}
+          {!!initialData.icon && (
+            <div className="flex items-center gap-x-2 group/icon">
+              <IconPicker onChange={onIconSelect}>
+                <p className="text-6xl hover:opacity-75 transition">
+                  {initialData.icon}
+                </p>
+              </IconPicker>
+              <Button
+                onClick={onDeleteIcon}
+                className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground"
+                variant={"outline"}
+                size="icon"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+          )}
+          {!initialData.icon && (
+            <IconPicker onChange={onIconSelect} asChild>
+              <Button
+                className="text-muted-foreground text-xs bg-transparent group-hover:opacity-100 opacity-0"
+                variant={"outline"}
+                size={"sm"}
+              >
+                <Smile className="mr-2 h-4 w-4" /> Add Icon
+              </Button>
+            </IconPicker>
+          )}
+          {!initialData.coverImage && (
             <Button
-              className="text-muted-foreground text-xs bg-transparent"
+              className="text-muted-foreground text-xs bg-transparent group-hover:opacity-100 opacity-0"
               variant={"outline"}
               size={"sm"}
+              onClick={onOpen}
             >
-              <Smile className="mr-2 h-4 w-4" /> Add Icon
+              <ImageIcon className="h-4 w-4 mr-2" />
+              Add Cover
             </Button>
-          </IconPicker>
-        )}
-        {!initialData.coverImage && !preview && (
-          <Button
-            className="text-muted-foreground text-xs bg-transparent"
-            variant={"outline"}
-            size={"sm"}
-            onClick={onOpen}
-          >
-            <ImageIcon className="h-4 w-4 mr-2" />
-            Add Cover
-          </Button>
-        )}
-      </div>
+          )}
+        </div>
+      )}
+
       {isEditing && !preview ? (
         <TextareaAutosize
           ref={inputRef}

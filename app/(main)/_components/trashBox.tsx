@@ -60,14 +60,14 @@ function TrashBox() {
 
   if (documents === undefined) {
     return (
-      <div className="h-[200px] flex items-center justify-center p-4">
+      <div className="h-[190px] flex items-center justify-center">
         <Spinner size={"lg"} />
       </div>
     );
   }
 
   return (
-    <div className="text-sm">
+    <div className="text-sm min-h-[190px]">
       <div className="flex items-center gap-x-2">
         <Search className="h-5 w-5" />
         <Input

@@ -9,7 +9,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
@@ -21,6 +21,14 @@ interface DocumentProps {
 
 const Document = ({ params: { documentId } }: DocumentProps) => {
   const document = useQuery(api.documents.getById, { documentId: documentId });
+
+  const [editorMount, setEditorMount] = useState(false);
+
+  useEffect(() => {
+    if (document) {
+      setEditorMount(true);
+    }
+  }, [document]);
 
   if (document === undefined) {
     return (
@@ -45,9 +53,11 @@ const Document = ({ params: { documentId } }: DocumentProps) => {
   return (
     <div className="pt-[50px] pb-12 min-w-[300px] overflow-y-scroll">
       <CoverImage url={document.coverImage} storageId={document.storageId} />
-      <div className="md:max-w-3xl lg:max-w-4xl mx-auto w-full space-y-8">
+      <div className="min-w-[300px] md:max-w-3xl lg:max-w-4xl mx-auto w-full space-y-8">
         <Toolbar initialData={document} />
-        <Editor documentId={documentId} initialContent={document.content} />
+        {editorMount && (
+          <Editor documentId={documentId} initialContent={document.content} />
+        )}
       </div>
     </div>
   );

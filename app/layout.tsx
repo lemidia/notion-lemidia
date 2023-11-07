@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="en">
       <body className={cn(inter.className, "overflow-x-hidden")}>
         <ConvexClientProvider>
           <EdgeStoreProvider>

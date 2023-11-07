@@ -59,8 +59,8 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
   }, [debouncedInput]);
 
   return (
-    <div className="flex items-center gap-x-1">
-      {!!initialData.icon && <p>{initialData.icon}</p>}
+    <div className="flex items-center gap-x-1 overflow-x-hidden">
+      {!!initialData.icon && <p className="text-lg">{initialData.icon}</p>}
       {isEditing ? (
         <Input
           ref={inputRef}
@@ -68,16 +68,16 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
           onBlur={disableInput}
           value={title}
           onKeyDown={onKeyDown}
-          className="h-7 px-2 focus-visible:ring-transparent"
+          className="h-7 px-2 focus-visible:ring-transparent w-96"
         />
       ) : (
         <Button
           onClick={enableInput}
           variant={"ghost"}
           size={"sm"}
-          className="font-semibold h-auto p-1 hover:bg-primary/10"
+          className="font-semibold h-auto p-1 hover:bg-primary/10 overflow-x-hidden"
         >
-          <span className="truncate">{initialData?.title}</span>
+          <p className="truncate">{initialData?.title}</p>
         </Button>
       )}
     </div>
