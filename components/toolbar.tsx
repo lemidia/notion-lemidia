@@ -3,12 +3,11 @@
 import { Doc } from "@/convex/_generated/dataModel";
 import IconPicker from "./icon-picker";
 import { Button } from "./ui/button";
-import { Image as ImageIcon, Smile, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import TextareaAutosize from "react-textarea-autosize";
-import { useCoverImageStore } from "@/hooks/useCoverImageStore";
 
 interface ToolbarProps {
   initialData: Doc<"documents">;
@@ -21,8 +20,6 @@ function Toolbar({ initialData, preview }: ToolbarProps) {
   const [value, setValue] = useState(initialData.title);
 
   const update = useMutation(api.documents.update);
-
-  const { onOpen } = useCoverImageStore();
 
   const enableInput = () => {
     if (preview) return;
@@ -90,28 +87,6 @@ function Toolbar({ initialData, preview }: ToolbarProps) {
                 <X className="h-5 w-5" />
               </Button>
             </div>
-          )}
-          {!initialData.icon && (
-            <IconPicker onChange={onIconSelect} asChild>
-              <Button
-                className="text-muted-foreground text-xs bg-transparent group-hover:opacity-100 opacity-0"
-                variant={"outline"}
-                size={"sm"}
-              >
-                <Smile className="mr-2 h-4 w-4" /> Add Icon
-              </Button>
-            </IconPicker>
-          )}
-          {!initialData.coverImage && (
-            <Button
-              className="text-muted-foreground text-xs bg-transparent group-hover:opacity-100 opacity-0"
-              variant={"outline"}
-              size={"sm"}
-              onClick={onOpen}
-            >
-              <ImageIcon className="h-4 w-4 mr-2" />
-              Add Cover
-            </Button>
           )}
         </div>
       )}

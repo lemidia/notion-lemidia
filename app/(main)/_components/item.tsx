@@ -117,7 +117,9 @@ function Item({
             onExpand?.();
           }}
           role="button"
-          className="p-0.5 rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1"
+          className={`p-0.5 rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1 ${
+            level >= 3 && "invisible"
+          }`}
         >
           <ChevronIcon className="h-5 w-5 shrink-0 text-muted-foreground/70" />
         </div>

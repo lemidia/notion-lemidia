@@ -2,10 +2,6 @@
 
 import { Id } from "@/convex/_generated/dataModel";
 
-interface MenuProps {
-  documentId: Id<"documents">;
-}
-
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -20,15 +16,26 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Trash } from "lucide-react";
+import { ImagePlus, MoreHorizontal, SmilePlus, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCoverImageStore } from "@/hooks/useCoverImageStore";
+import IconPicker from "@/components/icon-picker";
 
-function NavMenu({ documentId }: MenuProps) {
+interface MenuProps {
+  documentId: Id<"documents">;
+  storageId?: string;
+  icon?: string;
+  isArchived: boolean;
+}
+
+function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
   const router = useRouter();
   const { user } = useUser();
   const archive = useMutation(api.documents.archive);
-  const remove = useMutation(api.documents.remove);
-  const restore = useMutation(api.documents.restore);
+
+  const update = useMutation(api.documents.update);
+
+  const { onOpen } = useCoverImageStore();
 
   const onArchive = () => {
     const promise = archive({ id: documentId });
@@ -40,57 +47,84 @@ function NavMenu({ documentId }: MenuProps) {
     });
   };
 
-  const onRemove = async () => {
-    const promise = remove({ id: documentId });
-
-    toast.promise(promise, {
-      loading: "Removing note...",
-      success: "Note removed!",
-      error: "Failed to remove note.",
-    });
-
-    await promise;
-
-    // If promise has been fulfilled, below code will run
-    router.replace("/documents");
-  };
-
-  const onRestore = () => {
-    const promise = restore({ id: documentId });
-
-    toast.promise(promise, {
-      loading: "Restoring note...",
-      success: "Note restored!",
-      error: "Failed to restore note.",
-    });
+  const handleIconChange = (icon: string) => {
+    update({ id: documentId, icon: icon });
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            className="rounded-full w-8 h-8 flex lg:hidden"
+          >
+            <MoreHorizontal className="h-5 w-5" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="w-60 flex flex-col items-stretch"
+          align="end"
+          alignOffset={8}
+          forceMount
+        >
+          <DropdownMenuItem onClick={onOpen} disabled={!!storageId}>
+            <ImagePlus className="h-4 w-4 mr-2" /> Add Cover
+          </DropdownMenuItem>
+          <IconPicker asChild onChange={handleIconChange}>
+            <Button
+              className="p-2 h-8 bg-background text-white hover:bg-muted w-full justify-start"
+              disabled={!!icon}
+            >
+              <SmilePlus className="h-4 w-4 mr-2" /> Add Emoji
+            </Button>
+          </IconPicker>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            disabled={isArchived}
+            onClick={onArchive}
+            className="text-orange-600 focus:text-orange-600 font-semibold"
+          >
+            <Trash className="h-4 w-4 mr-2" /> Soft Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* for Desktop */}
+      <div className="hidden lg:flex items-center gap-x-1.5">
         <Button
+          disabled={!!storageId}
+          onClick={onOpen}
           variant={"ghost"}
           size={"icon"}
-          className="rounded-full w-8 h-8"
+          className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
         >
-          <MoreHorizontal className="h-5 w-5" />
+          <ImagePlus className="h-5 w-5" />
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-60"
-        align="end"
-        alignOffset={8}
-        forceMount
-      >
-        <DropdownMenuItem onClick={onArchive}>
-          <Trash className="h-4 w-4 mr-2" /> Delete
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <div className="text-muted-foreground p-2 py-1.5 text-xs">
-          Last edited by : {user?.fullName}
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <IconPicker asChild onChange={handleIconChange}>
+          <Button
+            disabled={!!icon}
+            variant={"ghost"}
+            size={"icon"}
+            className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
+          >
+            <SmilePlus className="h-5 w-5" />
+          </Button>
+        </IconPicker>
+
+        <div className="h-6 w-[1.3px] rounded-md bg-muted-foreground" />
+        <Button
+          disabled={isArchived}
+          onClick={onArchive}
+          variant={"ghost"}
+          size={"icon"}
+          className="rounded-full w-8 h-8 hover:text-orange-600 dark:hover:bg-neutral-700"
+        >
+          <Trash className="h-5 w-5" />
+        </Button>
+      </div>
+    </>
   );
 }
 

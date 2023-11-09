@@ -79,18 +79,23 @@ function Publish({ initialData }: PublishProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant={"ghost"} size={"sm"} className="h-8 text-sm gap-x-2">
-          {initialData.isPublished && (
-            <Globe className="text-sky-500 w-5 h-5 animate-pulse" />
-          )}
-          Publish
+        <Button
+          variant={"ghost"}
+          size={"icon"}
+          className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
+        >
+          <Globe
+            className={`w-5 h-5 ${
+              initialData.isPublished && "text-sky-400 animate-pulse"
+            } `}
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72" align="end" alignOffset={8} forceMount>
         {initialData.isPublished ? (
           <div className="flex flex-col gap-y-4">
             <div className="flex items-center gap-x-2">
-              <Globe className="text-sky-500 h-5 w-5 text-muted-foreground animate-pulse" />
+              <Globe className="text-sky-400 h-5 w-5 text-muted-foreground animate-pulse" />
               <p className="text-sm font-medium">This note is now public.</p>
             </div>
             <div className="flex items-center">
@@ -144,7 +149,7 @@ function Publish({ initialData }: PublishProps) {
 }
 
 Publish.Skeleton = function PublishSkeleton() {
-  return <Skeleton className="h-7 w-[70px] rounded-md" />;
+  return <Skeleton className="h-8 w-8 rounded-full" />;
 };
 
 export default Publish;

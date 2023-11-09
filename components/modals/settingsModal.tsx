@@ -30,6 +30,7 @@ function SettingsModal() {
             </Label>
             <span>Customize how Notion looks on your device. </span>
           </div>
+
           <ModeToggle />
         </div>
       </DialogContent>

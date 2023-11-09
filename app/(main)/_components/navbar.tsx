@@ -52,7 +52,12 @@ function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
             <NavbarTitle initialData={document} />
             <div className="flex items-center gap-x-2">
               <Publish initialData={document} />
-              <NavMenu documentId={document._id} />
+              <NavMenu
+                documentId={document._id}
+                storageId={document.storageId}
+                icon={document.icon}
+                isArchived={document.isArchived}
+              />
             </div>
           </div>
         ) : (

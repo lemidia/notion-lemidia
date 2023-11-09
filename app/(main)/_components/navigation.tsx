@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   ChevronsLeft,
   MenuIcon,
-  PlusCircle,
+  Plus,
   Search,
   Settings,
   Trash,
@@ -168,7 +168,7 @@ function Navigation() {
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={onSearchOpen} />
           <Item label="Settings" icon={Settings} onClick={onSettingsOpen} />
-          <Item onClick={handleCreate} label="New Note" icon={PlusCircle} />
+          <Item onClick={handleCreate} label="New Note" icon={Plus} />
         </div>
 
         {/* Separator */}

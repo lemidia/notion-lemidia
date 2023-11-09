@@ -1,7 +1,16 @@
 "use client";
 
-import EmojiPicker, { Theme } from "emoji-picker-react";
+import { Theme } from "emoji-picker-react";
 import { useTheme } from "next-themes";
+
+import dynamic from "next/dynamic";
+
+const EmojiPicker = dynamic(
+  () => {
+    return import("emoji-picker-react");
+  },
+  { ssr: false }
+);
 
 import {
   Popover,
@@ -28,8 +37,9 @@ function IconPicker({ onChange, children, asChild }: IconPickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild={asChild}>{children}</PopoverTrigger>
-      <PopoverContent className="p-0 w-full border-none shadow-none">
+      <PopoverContent className="p-0 w-full border-none shadow-none" forceMount>
         <EmojiPicker
+          autoFocusSearch={false}
           height={350}
           theme={theme}
           onEmojiClick={(data) => onChange(data.emoji)}
