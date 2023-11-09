@@ -6,6 +6,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 import { useMutation } from "convex/react";
 import {
+  Ban,
   ChevronDown,
   ChevronRight,
   LucideIcon,
@@ -59,6 +60,11 @@ function Item({
     e.stopPropagation();
 
     if (!id) return;
+
+    if (level >= 3) {
+      toast.error("Note creation levels are limited to a maximum of 4 depth");
+      return;
+    }
 
     const promise = create({ parentDocument: id, title: "Untitled" });
 
@@ -135,7 +141,7 @@ function Item({
             <DropdownMenuTrigger className="focus:outline-none">
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="p-0.5 opacity-0 group-hover:opacity-100 rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
+                className="p-0.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
                 role="button"
               >
                 <MoreHorizontal className="h-5 w-5 text-muted-foreground/60" />
@@ -156,12 +162,17 @@ function Item({
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
+          {/* Note creation not allowed from level 3 or deep */}
           <div
             role="button"
             onClick={onCreate}
-            className="p-0.5 opacity-0 group-hover:opacity-100 ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
+            className="p-0.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
           >
-            <Plus className="h-5 w-5 text-muted-foreground/60" />
+            {level >= 3 ? (
+              <Ban className="h-5 w-5 text-muted-foreground/60" />
+            ) : (
+              <Plus className="h-5 w-5 text-muted-foreground/60" />
+            )}
           </div>
         </div>
       )}

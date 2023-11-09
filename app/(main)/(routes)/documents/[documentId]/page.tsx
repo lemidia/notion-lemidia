@@ -1,7 +1,6 @@
 "use client";
 
 import CoverImage from "@/components/coverImage";
-// import Editor from "@/components/editor";
 import Toolbar from "@/components/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
@@ -9,7 +8,6 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
 
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
@@ -21,14 +19,6 @@ interface DocumentProps {
 
 const Document = ({ params: { documentId } }: DocumentProps) => {
   const document = useQuery(api.documents.getById, { documentId: documentId });
-
-  const [editorMount, setEditorMount] = useState(false);
-
-  useEffect(() => {
-    if (document) {
-      setEditorMount(true);
-    }
-  }, [document]);
 
   if (document === undefined) {
     return (
@@ -55,9 +45,7 @@ const Document = ({ params: { documentId } }: DocumentProps) => {
       <CoverImage url={document.coverImage} storageId={document.storageId} />
       <div className="min-w-[300px] md:max-w-3xl lg:max-w-4xl mx-auto w-full space-y-8">
         <Toolbar initialData={document} />
-        {editorMount && (
-          <Editor documentId={documentId} initialContent={document.content} />
-        )}
+        <Editor documentId={documentId} initialContent={document.content} />
       </div>
     </div>
   );

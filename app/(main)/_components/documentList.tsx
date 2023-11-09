@@ -56,7 +56,7 @@ function DocumentList({ parentDocumentId, level = 0 }: DocumentListProps) {
         className={cn(
           "hidden last:flex text-sm font-medium text-muted-foreground/80 items-center h-8 whitespace-nowrap"
         )}
-        style={{ paddingLeft: level ? `${level * 12 + 28}px` : 12 }}
+        style={{ paddingLeft: level ? `${level * 12 + 33}px` : 12 }}
       >
         No Pages inside
       </p>
