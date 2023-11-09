@@ -31,7 +31,6 @@ export default function UserItem() {
               {user?.fullName}&apos;s Notion
             </span>
           </div>
-          <ChevronsLeftRight className=" rotate-90 ml-2 text-muted-foreground h-4 w-4" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent

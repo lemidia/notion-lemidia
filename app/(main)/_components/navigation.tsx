@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils";
 import {
-  ChevronsLeft,
+  ArrowLeftFromLine,
   MenuIcon,
+  PanelLeftClose,
   Plus,
   Search,
   Settings,
@@ -153,18 +154,18 @@ function Navigation() {
           isMobile && "w-0"
         )}
       >
-        {/* Collapsing sidebar button */}
-        <div
-          role="button"
-          onClick={(e) => collapse(e)}
-          className={cn(
-            "p-0.5 text-muted-foreground rounded-sm hover:bg-neutral-200 hover:dark:bg-neutral-600 absolute top-2 right-3 opacity-0 transition group-hover/sidebar:opacity-100",
-            isMobile && "opacity-100"
-          )}
-        >
-          <ChevronsLeft className="h-6 w-6" />
-        </div>
-        <div>
+        <div className="relative">
+          {/* Collapsing sidebar button */}
+          <div
+            role="button"
+            onClick={(e) => collapse(e)}
+            className={cn(
+              "p-1.5 text-muted-foreground hover:bg-neutral-200 hover:dark:bg-neutral-700 absolute top-3.5 right-3.5 opacity-0 transition group-hover/sidebar:opacity-100 flex items-center justify-center rounded-md",
+              isMobile && "opacity-100"
+            )}
+          >
+            <ArrowLeftFromLine className="h-5 w-5" />
+          </div>
           <UserItem />
           <Item label="Search" icon={Search} isSearch onClick={onSearchOpen} />
           <Item label="Settings" icon={Settings} onClick={onSettingsOpen} />
