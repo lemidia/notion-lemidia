@@ -4,11 +4,9 @@ import { cn } from "@/lib/utils";
 import {
   ArrowLeftFromLine,
   MenuIcon,
-  PanelLeftClose,
   Plus,
   Search,
   Settings,
-  Trash,
 } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,15 +19,11 @@ import Item from "./item";
 import { toast } from "sonner";
 import DocumentList from "./documentList";
 
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import TrashBox from "./trashBox";
 import { useSearchStore } from "@/hooks/useSearchStore";
 import { useSettingsStore } from "@/hooks/useSettingsStore";
 import Navbar from "./navbar";
+import Trash from "./trash";
+import { Button } from "@/components/ui/button";
 
 function Navigation() {
   const pathname = usePathname();
@@ -179,20 +173,8 @@ function Navigation() {
         <div>
           <DocumentList />
         </div>
-        {/* Popover */}
-        <Popover>
-          <PopoverTrigger className="w-full mt-6">
-            <Item label="Trash" icon={Trash} />
-          </PopoverTrigger>
-          {isMobile && isCollapsed ? null : (
-            <PopoverContent
-              side={isMobile ? "bottom" : "right"}
-              className="p-2 w-72 min-h-[190px] mx-2"
-            >
-              <TrashBox />
-            </PopoverContent>
-          )}
-        </Popover>
+        {/* Trash Popover */}
+        <Trash isMobile={isMobile} isCollapsed={isCollapsed} />
 
         {/* For adjusting width of Sidebar */}
         <div
@@ -216,13 +198,19 @@ function Navigation() {
         {!!params.documentId ? (
           <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
         ) : (
-          <nav className="bg-transparent px-3 min-h-[50px] flex items-center w-full">
+          <nav className="bg-transparent px-2.5 min-h-[50px] flex items-center w-full">
             {isCollapsed && (
-              <MenuIcon
-                onClick={resetWidth}
-                role="button"
-                className="h-6 w-6 text-muted-foreground"
-              />
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                className="w-8 h-8 dark:hover:bg-neutral-700"
+              >
+                <MenuIcon
+                  onClick={resetWidth}
+                  role="button"
+                  className="h-6 w-6 flex-shrink-0"
+                />
+              </Button>
             )}
           </nav>
         )}

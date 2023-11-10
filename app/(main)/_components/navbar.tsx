@@ -37,9 +37,13 @@ function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
 
   return (
     <>
-      <nav className="bg-background dark:bg-[#1f1f1f] px-2.5 h-[50px] w-full flex items-center gap-x-3 overflow-hidden">
+      <nav className="bg-background/80 dark:bg-[#1f1f1f]/80 backdrop-blur-sm px-2.5 h-[50px] w-full flex items-center gap-x-3 overflow-hidden">
         {isCollapsed && (
-          <Button variant={"ghost"} size={"icon"} className="w-8 h-8">
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            className="w-8 h-8 dark:hover:bg-neutral-700"
+          >
             <MenuIcon
               onClick={onResetWidth}
               role="button"

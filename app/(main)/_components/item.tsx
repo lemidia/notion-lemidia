@@ -24,6 +24,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@clerk/clerk-react";
+import { Badge } from "@/components/ui/badge";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -36,6 +37,7 @@ interface ItemProps {
   label: string;
   onClick?: () => void;
   icon: LucideIcon;
+  badge?: string | number;
 }
 
 function Item({
@@ -49,6 +51,7 @@ function Item({
   label,
   onClick,
   icon: Icon,
+  badge,
 }: ItemProps) {
   const { user } = useUser();
   const router = useRouter();
@@ -131,6 +134,17 @@ function Item({
       )}
 
       <span className="truncate text-sm">{label}</span>
+
+      {!!badge && (
+        <Badge className="ml-3 px-1.5 bg-red-500/90 hover:bg-red-500 text-white leading-[12px]">
+          <Plus
+            className="flex-shrink-0 w-[10px] h-[10px] pb-[0.5px]"
+            strokeWidth={4}
+          />
+          {(badge as number) > 999 ? 999 : badge}
+        </Badge>
+      )}
+
       {isSearch && (
         <kbd className="ml-auto pointer-events-none inline-flex select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           CMD+K

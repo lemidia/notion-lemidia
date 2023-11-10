@@ -4,23 +4,25 @@ import ConfirmModal from "@/components/modals/confirmModal";
 import { Spinner } from "@/components/spinner";
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { Doc, Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
 import { Search, Trash, Undo } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-function TrashBox() {
+interface TrashBoxProps {
+  archivedItems?: Doc<"documents">[];
+}
+
+function TrashBox({ archivedItems }: TrashBoxProps) {
   const router = useRouter();
-  const params = useParams();
   const restore = useMutation(api.documents.restore);
   const remove = useMutation(api.documents.remove);
 
-  const documents = useQuery(api.documents.getTrash);
   const [search, setSearch] = useState("");
 
-  const filteredDocuments = documents?.filter((document) =>
+  const filteredDocuments = archivedItems?.filter((document) =>
     document.title.toLocaleLowerCase().includes(search.toLocaleLowerCase())
   );
 
@@ -58,7 +60,8 @@ function TrashBox() {
     router.replace("/documents");
   };
 
-  if (documents === undefined) {
+  // Fetching related items...
+  if (archivedItems === undefined) {
     return (
       <div className="h-[190px] flex items-center justify-center">
         <Spinner size={"lg"} />

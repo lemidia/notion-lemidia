@@ -16,7 +16,7 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
-import { ImagePlus, MoreHorizontal, SmilePlus, Trash } from "lucide-react";
+import { ImagePlus, MoreVertical, SmilePlus, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCoverImageStore } from "@/hooks/useCoverImageStore";
 import IconPicker from "@/components/icon-picker";
@@ -58,9 +58,9 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
           <Button
             variant={"ghost"}
             size={"icon"}
-            className="rounded-full w-8 h-8 flex lg:hidden"
+            className="rounded-full w-8 h-8 flex lg:hidden dark:hover:bg-neutral-700"
           >
-            <MoreHorizontal className="h-5 w-5" />
+            <MoreVertical className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -69,12 +69,16 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
           alignOffset={8}
           forceMount
         >
-          <DropdownMenuItem onClick={onOpen} disabled={!!storageId}>
+          <DropdownMenuItem
+            onClick={onOpen}
+            disabled={!!storageId}
+            className="h-[34px] font-normal"
+          >
             <ImagePlus className="h-4 w-4 mr-2" /> Add Cover
           </DropdownMenuItem>
           <IconPicker asChild onChange={handleIconChange}>
             <Button
-              className="p-2 h-8 bg-background text-white hover:bg-muted w-full justify-start"
+              className="p-2 h-[34px] bg-background text-white hover:bg-muted w-full justify-start text-primary font-normal"
               disabled={!!icon}
             >
               <SmilePlus className="h-4 w-4 mr-2" /> Add Emoji

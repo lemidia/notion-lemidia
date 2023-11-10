@@ -74,7 +74,7 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
         <Button
           onClick={enableInput}
           variant={"ghost"}
-          className="font-semibold h-auto p-1.5"
+          className="font-semibold h-7 px-1.5 dark:hover:bg-neutral-700 text-base"
         >
           <p className="truncate">{initialData?.title}</p>
         </Button>
