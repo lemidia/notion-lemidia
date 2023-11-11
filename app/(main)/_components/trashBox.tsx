@@ -70,17 +70,17 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
   }
 
   return (
-    <div className="text-sm min-h-[190px]">
-      <div className="flex items-center gap-x-2">
-        <Search className="h-5 w-5" />
+    <div className="text-sm min-h-[170px] max-h-[220px] flex flex-col">
+      <div className="flex items-center gap-x-2 bg-background">
+        <Search className="h-6 w-6" />
         <Input
           value={search}
           placeholder="Filter by note title..."
           onChange={(e) => setSearch(e.target.value)}
-          className="h-7 px-2 focus-visible:ring-1 focus-visible:ring-offset-0 bg-muted text-muted-foreground"
+          className="h-8 px-2 focus-visible:ring-1 focus-visible:ring-offset-0 bg-muted text-muted-foreground text-base"
         />
       </div>
-      <div className="mt-2">
+      <div className="mt-2 flex-1 overflow-y-scroll">
         <p className="hidden last:block text-xs text-center text-muted-foreground">
           No Notes found.
         </p>

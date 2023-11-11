@@ -68,7 +68,7 @@ function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
           <p className="font-semibold font-sm">Note not found</p>
         )}
       </nav>
-      {document?.isArchived && <Banner documentId={document._id} />}
+      {/* {document?.isArchived && <Banner documentId={document._id} />} */}
     </>
   );
 }

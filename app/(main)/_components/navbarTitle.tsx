@@ -60,7 +60,7 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
 
   return (
     <div className="flex items-center gap-x-0.5 overflow-x-hidden rounded-md">
-      {!!initialData.icon && <p className="text-lg">{initialData.icon}</p>}
+      {!!initialData.icon && <p className="text-xl">{initialData.icon}</p>}
       {isEditing ? (
         <Input
           ref={inputRef}

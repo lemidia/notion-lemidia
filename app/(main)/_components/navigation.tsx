@@ -24,6 +24,7 @@ import { useSettingsStore } from "@/hooks/useSettingsStore";
 import Navbar from "./navbar";
 import Trash from "./trash";
 import { Button } from "@/components/ui/button";
+import { useNavigationStore } from "@/hooks/useNavigationStore";
 
 function Navigation() {
   const pathname = usePathname();
@@ -39,6 +40,8 @@ function Navigation() {
   const navbarRef = useRef<HTMLDivElement>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+  const { onCollapsed: onCollapsedGlobal, onExpand: onExpandGlobal } =
+    useNavigationStore();
 
   // For Search Dialog open
   const onSearchOpen = useSearchStore((store) => store.onOpen);
@@ -83,6 +86,7 @@ function Navigation() {
   const resetWidth = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false);
+      onExpandGlobal();
       setIsResetting(true);
 
       sidebarRef.current.style.width = isMobile ? "100%" : "240px";
@@ -100,6 +104,7 @@ function Navigation() {
     e?.stopPropagation();
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
+      onCollapsedGlobal();
       setIsResetting(true);
 
       sidebarRef.current.style.width = "0px";
@@ -143,7 +148,7 @@ function Navigation() {
       <aside
         ref={sidebarRef}
         className={cn(
-          "group/sidebar h-full bg-secondary overflow-y-auto relative flex flex-col w-60 z-[99999]",
+          "group/sidebar h-full bg-secondary overflow-y-auto relative flex flex-col w-60 z-[99999] overflow-x-hidden",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "w-0"
         )}

@@ -37,7 +37,11 @@ function IconPicker({ onChange, children, asChild }: IconPickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild={asChild}>{children}</PopoverTrigger>
-      <PopoverContent className="p-0 w-full border-none shadow-none" forceMount>
+      <PopoverContent
+        className="p-0 w-full border-none shadow-none"
+        forceMount
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <EmojiPicker
           autoFocusSearch={false}
           height={350}

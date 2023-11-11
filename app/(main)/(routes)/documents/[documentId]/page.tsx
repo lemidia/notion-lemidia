@@ -41,7 +41,7 @@ const Document = ({ params: { documentId } }: DocumentProps) => {
   }
 
   return (
-    <div className="pt-[50px] pb-12 min-w-[300px] overflow-y-scroll">
+    <div className="pt-[50px] pb-12 min-w-[300px] overflow-y-scroll overflow-x-hidden">
       <CoverImage url={document.coverImage} storageId={document.storageId} />
       <div className="min-w-[300px] md:max-w-3xl lg:max-w-4xl mx-auto w-full space-y-8">
         <Toolbar initialData={document} />

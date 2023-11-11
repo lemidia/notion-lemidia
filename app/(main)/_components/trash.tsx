@@ -30,6 +30,7 @@ function Trash({ isMobile, isCollapsed }: TrashProps) {
       </PopoverTrigger>
       {isMobile && isCollapsed ? null : (
         <PopoverContent
+          onOpenAutoFocus={(e) => e.preventDefault()}
           side={isMobile ? "bottom" : "right"}
           className="p-2 w-72 min-h-[190px] mx-2"
         >

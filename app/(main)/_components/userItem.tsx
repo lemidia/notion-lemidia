@@ -10,7 +10,12 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
-import { ChevronsLeftRight } from "lucide-react";
+import {
+  BadgeCheck,
+  CalendarDays,
+  ChevronsLeftRight,
+  LogOut,
+} from "lucide-react";
 
 import { SignOutButton, useUser } from "@clerk/clerk-react";
 
@@ -34,34 +39,53 @@ export default function UserItem() {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-80"
+        className="w-72"
         align="start"
         alignOffset={11}
         forceMount
       >
-        <div className="flex flex-col space-y-4 p-2 pt-3 ">
-          <p className="text-sm font-medium leading-none">
-            {user?.emailAddresses[0].emailAddress}
-          </p>
-          <div className="flex items-center gap-x-2">
-            <div className="rounded-md bg-secondary p-1">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.imageUrl} />
-              </Avatar>
-            </div>
-            <div className="space-y-1">
-              <div className="text-sm line-clamp-2">
-                {user?.fullName}&apos; Notion
+        <div className="flex gap-x-5 p-3">
+          <div>
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={user?.imageUrl} />
+            </Avatar>
+          </div>
+          <div className="flex-1 flex flex-col gap-y-2">
+            <h5 className="text-sm font-semibold">
+              {user?.fullName}&apos;s Notion
+            </h5>
+            <p className="text-sm mb-2">
+              {user?.emailAddresses[0].emailAddress}
+            </p>
+            {user?.externalAccounts[0].provider && (
+              <div className="text-xs text-muted-foreground flex gap-x-2">
+                {" "}
+                <BadgeCheck
+                  className="w-4 h-4 text-sky-500"
+                  strokeWidth={2.5}
+                />
+                <span>
+                  Signed in via{" "}
+                  <span className="capitalize">
+                    {user?.externalAccounts[0].provider}
+                  </span>
+                </span>
               </div>
-            </div>
+            )}
+            {user?.createdAt && (
+              <div className="text-xs text-muted-foreground flex gap-x-2">
+                <CalendarDays className="w-4 h-4" /> Joined{" "}
+                {new Intl.DateTimeFormat("en-US", {
+                  year: "numeric",
+                  month: "long",
+                }).format(new Date(user?.createdAt))}
+              </div>
+            )}
           </div>
         </div>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          asChild
-          className="w-full text-muted-foreground cursor-pointer"
-        >
+        <DropdownMenuItem asChild className="w-full cursor-pointer">
           <SignOutButton />
         </DropdownMenuItem>
       </DropdownMenuContent>
