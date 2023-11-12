@@ -3,13 +3,15 @@
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, Undo } from "lucide-react";
 import { useParams } from "next/navigation";
 import NavbarTitle from "./navbarTitle";
 import Banner from "./banner";
 import NavMenu from "./navMenu";
 import Publish from "./publish";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { TooltipButton } from "@/components/tooltipButtton";
 
 interface NavbarProps {
   isCollapsed: boolean;
@@ -37,7 +39,11 @@ function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
 
   return (
     <>
-      <nav className="bg-background/80 dark:bg-[#1f1f1f]/80 backdrop-blur-sm px-2.5 h-[50px] w-full flex items-center gap-x-3 overflow-hidden">
+      <nav
+        className={cn(
+          "bg-background/80 dark:bg-[#1f1f1f]/80 backdrop-blur-sm px-2.5 h-[50px] w-full flex items-center gap-x-3 min-w-0"
+        )}
+      >
         {isCollapsed && (
           <Button
             variant={"ghost"}
@@ -55,7 +61,19 @@ function Navbar({ isCollapsed, onResetWidth }: NavbarProps) {
           <div className="flex items-center justify-between flex-1 min-w-0">
             <NavbarTitle initialData={document} />
             <div className="flex items-center gap-x-2">
-              <Publish initialData={document} />
+              {document.isArchived ? (
+                <TooltipButton
+                  TooltipMessage={"Restore"}
+                  variant={"ghost"}
+                  className="w-8 h-8 dark:hover:bg-neutral-700 rounded-full"
+                  size={"icon"}
+                >
+                  <Undo className="w-5 h-5" />
+                </TooltipButton>
+              ) : (
+                <Publish initialData={document} />
+              )}
+
               <NavMenu
                 documentId={document._id}
                 storageId={document.storageId}

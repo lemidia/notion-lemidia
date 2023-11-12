@@ -20,6 +20,7 @@ import { ImagePlus, MoreVertical, SmilePlus, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCoverImageStore } from "@/hooks/useCoverImageStore";
 import IconPicker from "@/components/icon-picker";
+import { TooltipButton } from "@/components/tooltipButtton";
 
 interface MenuProps {
   documentId: Id<"documents">;
@@ -97,7 +98,8 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
 
       {/* for Desktop */}
       <div className="hidden lg:flex items-center gap-x-1.5">
-        <Button
+        <TooltipButton
+          TooltipMessage={"Add Cover"}
           disabled={!!storageId}
           onClick={onOpen}
           variant={"ghost"}
@@ -105,20 +107,22 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
           className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
         >
           <ImagePlus className="h-5 w-5" />
-        </Button>
+        </TooltipButton>
         <IconPicker asChild onChange={handleIconChange}>
-          <Button
+          <TooltipButton
+            TooltipMessage={"Add Emoji"}
             disabled={!!icon}
             variant={"ghost"}
             size={"icon"}
             className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
           >
             <SmilePlus className="h-5 w-5" />
-          </Button>
+          </TooltipButton>
         </IconPicker>
 
         <div className="h-6 w-[1.3px] rounded-md bg-muted-foreground" />
-        <Button
+        <TooltipButton
+          TooltipMessage={"Soft Delete"}
           disabled={isArchived}
           onClick={onArchive}
           variant={"ghost"}
@@ -126,7 +130,7 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
           className="rounded-full w-8 h-8 hover:text-orange-600 dark:hover:bg-neutral-700"
         >
           <Trash className="h-5 w-5" />
-        </Button>
+        </TooltipButton>
       </div>
     </>
   );

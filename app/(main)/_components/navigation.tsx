@@ -172,7 +172,7 @@ function Navigation() {
         </div>
 
         {/* Separator */}
-        <div className="mx-2 my-2 h-[1.5px] bg-muted-foreground/50 shrink-0" />
+        <div className="mx-2 my-2 h-[1px] bg-muted-foreground/50 shrink-0" />
 
         {/* All the notes are rendered here inside */}
         <div>

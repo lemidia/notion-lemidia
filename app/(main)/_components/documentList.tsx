@@ -58,7 +58,7 @@ function DocumentList({ parentDocumentId, level = 0 }: DocumentListProps) {
         )}
         style={{ paddingLeft: level ? `${level * 12 + 33}px` : 12 }}
       >
-        No Pages inside
+        No notes inside
       </p>
       {documents.map((document) => (
         <div key={document._id}>

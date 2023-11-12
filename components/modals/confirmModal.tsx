@@ -10,6 +10,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import { AlertTriangle } from "lucide-react";
 
 interface ConfirmModalProps {
   children: React.ReactNode;
@@ -29,9 +30,13 @@ function ConfirmModal({ children, onConfirm }: ConfirmModalProps) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle className="flex items-center gap-x-3">
+            <AlertTriangle className="w-6 h-6" /> Are you sure to delete?
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action is irreversible.
+            This behavior is <span className="font-bold">irreversible</span> and
+            if the note you want to delete has other notes below it, all those
+            notes will also be deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

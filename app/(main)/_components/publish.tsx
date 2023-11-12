@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Check, Copy, Globe } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TooltipButton } from "@/components/tooltipButtton";
 
 interface PublishProps {
   initialData: Doc<"documents">;
@@ -79,7 +80,8 @@ function Publish({ initialData }: PublishProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
+        <TooltipButton
+          TooltipMessage={"Publish"}
           variant={"ghost"}
           size={"icon"}
           className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
@@ -89,7 +91,7 @@ function Publish({ initialData }: PublishProps) {
               initialData.isPublished && "text-sky-400 animate-pulse"
             } `}
           />
-        </Button>
+        </TooltipButton>
       </PopoverTrigger>
       <PopoverContent className="w-72" align="end" alignOffset={8} forceMount>
         {initialData.isPublished ? (
@@ -117,14 +119,15 @@ function Publish({ initialData }: PublishProps) {
                 )}
               </Button>
             </div>
-            <Button
+            <TooltipButton
+              TooltipMessage={"Unpublish"}
               className="w-full text-sm"
               onClick={onUnPublish}
               size={"sm"}
               disabled={isSubmitting}
             >
               Unpublish
-            </Button>
+            </TooltipButton>
           </div>
         ) : (
           <div className="flex flex-col items-center text-center">

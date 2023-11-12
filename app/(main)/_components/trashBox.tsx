@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import { Search, Trash, Undo } from "lucide-react";
+import { Search, Trash, Undo, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -81,19 +81,24 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
         />
       </div>
       <div className="mt-2 flex-1 overflow-y-scroll">
-        <p className="hidden last:block text-xs text-center text-muted-foreground">
-          No Notes found.
+        <p className="hidden last:block text-sm text-center text-muted-foreground">
+          No notes in trash box.
         </p>
         {filteredDocuments?.map((document) => (
           <div
             key={document._id}
             role="button"
             onClick={() => onClick(document._id)}
-            className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center justify-between text-primary p-1"
+            className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary p-1"
           >
-            <span className="truncate pl-1">{document.title}</span>
+            {document.icon && (
+              <span className="text-lg mr-0.5">{document.icon}</span>
+            )}
+            <span className="truncate pl-1 text-muted-foreground font-medium">
+              {document.title}
+            </span>
 
-            <div className="flex items-center">
+            <div className="flex items-center ml-auto">
               <div
                 role="button"
                 className="rounded-sm p-2 text-muted-foreground hover:bg-primary/10"
@@ -106,7 +111,10 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
                   role="button"
                   className="rounded-sm p-2 text-muted-foreground hover:bg-primary/10"
                 >
-                  <Trash className="h-4 w-4 text-muted-foreground" />
+                  <X
+                    className="h-4 w-4 text-muted-foreground"
+                    strokeWidth={2.6}
+                  />
                 </div>
               </ConfirmModal>
             </div>

@@ -138,7 +138,7 @@ function Item({
       {!!badge && (
         <Badge className="ml-3 px-1.5 bg-red-500/90 hover:bg-red-500 text-white leading-[12px]">
           <Plus
-            className="flex-shrink-0 w-[10px] h-[10px] pb-[0.5px]"
+            className="flex-shrink-0 w-[10px] h-[10px] pb-[0.5px] ml-[-1px]"
             strokeWidth={4}
           />
           {(badge as number) > 999 ? 999 : badge}
