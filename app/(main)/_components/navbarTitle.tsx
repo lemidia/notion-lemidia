@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { TooltipButton } from "@/components/tooltipButton";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
@@ -42,7 +42,7 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.key === "Escape") {
       disableInput();
     }
   };
@@ -51,7 +51,7 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
     if (isMounted) {
       update({
         id: initialData._id,
-        title: debouncedInput || "Untitled",
+        title: debouncedInput.trim() || "Untitled",
       });
     }
 
@@ -59,7 +59,7 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
   }, [debouncedInput]);
 
   return (
-    <div className="flex items-center gap-x-0.5 overflow-x-hidden rounded-md">
+    <div className="flex items-center gap-x-0.5 rounded-md min-w-0">
       {!!initialData.icon && <p className="text-xl">{initialData.icon}</p>}
       {isEditing ? (
         <Input
@@ -71,13 +71,14 @@ function NavbarTitle({ initialData }: NavbarTitleProps) {
           className="h-7 px-1.5 focus-visible:ring-transparent ring-offset-transparent font-semibold text-base"
         />
       ) : (
-        <Button
+        <TooltipButton
+          tooltipMessage={"Modify Title"}
           onClick={enableInput}
           variant={"ghost"}
           className="font-semibold h-7 px-1.5 dark:hover:bg-neutral-700 text-base min-w-0"
         >
           <p className="truncate">{initialData?.title}</p>
-        </Button>
+        </TooltipButton>
       )}
     </div>
   );

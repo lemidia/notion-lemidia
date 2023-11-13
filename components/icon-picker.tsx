@@ -36,7 +36,9 @@ function IconPicker({ onChange, children, asChild }: IconPickerProps) {
 
   return (
     <Popover>
-      <PopoverTrigger asChild={asChild}>{children}</PopoverTrigger>
+      <PopoverTrigger asChild={asChild}>
+        <span tabIndex={-1}>{children}</span>
+      </PopoverTrigger>
       <PopoverContent
         className="p-0 w-full border-none shadow-none"
         forceMount

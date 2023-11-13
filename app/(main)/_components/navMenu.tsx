@@ -20,7 +20,7 @@ import { ImagePlus, MoreVertical, SmilePlus, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCoverImageStore } from "@/hooks/useCoverImageStore";
 import IconPicker from "@/components/icon-picker";
-import { TooltipButton } from "@/components/tooltipButtton";
+import { TooltipButton } from "@/components/tooltipButton";
 
 interface MenuProps {
   documentId: Id<"documents">;
@@ -99,7 +99,7 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
       {/* for Desktop */}
       <div className="hidden lg:flex items-center gap-x-1.5">
         <TooltipButton
-          TooltipMessage={"Add Cover"}
+          tooltipMessage={"Add Cover"}
           disabled={!!storageId}
           onClick={onOpen}
           variant={"ghost"}
@@ -110,7 +110,7 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
         </TooltipButton>
         <IconPicker asChild onChange={handleIconChange}>
           <TooltipButton
-            TooltipMessage={"Add Emoji"}
+            tooltipMessage={"Add Emoji"}
             disabled={!!icon}
             variant={"ghost"}
             size={"icon"}
@@ -122,7 +122,7 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
 
         <div className="h-6 w-[1.3px] rounded-md bg-muted-foreground" />
         <TooltipButton
-          TooltipMessage={"Soft Delete"}
+          tooltipMessage={"Move to Trash"}
           disabled={isArchived}
           onClick={onArchive}
           variant={"ghost"}

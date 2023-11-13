@@ -12,19 +12,19 @@ import { VariantProps } from "class-variance-authority";
 interface TooltipButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  TooltipMessage: string | number;
+  tooltipMessage: string | number;
 }
 
 export function TooltipButton({
   children,
-  TooltipMessage,
+  tooltipMessage,
   variant,
   className,
   size,
   ...props
 }: TooltipButtonProps) {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={400}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -37,7 +37,7 @@ export function TooltipButton({
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{TooltipMessage}</p>
+          <p>{tooltipMessage}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

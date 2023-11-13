@@ -40,7 +40,7 @@ function Toolbar({ initialData, preview }: ToolbarProps) {
     setValue(value);
     update({
       id: initialData._id,
-      title: value || "Untitled",
+      title: value.trim() || "Untitled",
     });
   };
 

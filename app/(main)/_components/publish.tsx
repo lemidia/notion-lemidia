@@ -12,9 +12,9 @@ import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Check, Copy, Globe } from "lucide-react";
+import { Check, Copy, Globe, Undo } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TooltipButton } from "@/components/tooltipButtton";
+import { TooltipButton } from "@/components/tooltipButton";
 
 interface PublishProps {
   initialData: Doc<"documents">;
@@ -23,6 +23,7 @@ interface PublishProps {
 function Publish({ initialData }: PublishProps) {
   const origin = useOrigin();
   const update = useMutation(api.documents.update);
+  const restore = useMutation(api.documents.restore);
 
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,6 +70,23 @@ function Publish({ initialData }: PublishProps) {
     }
   };
 
+  const onRestore = async () => {
+    try {
+      setIsSubmitting(true);
+      const promise = restore({ id: initialData._id });
+
+      toast.promise(promise, {
+        loading: "Restoring note...",
+        success: "Note restored!",
+        error: "Failed to restore note.",
+      });
+
+      await promise;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const onCopy = async () => {
     await navigator.clipboard.writeText(url);
     setCopied(true);
@@ -77,23 +95,45 @@ function Publish({ initialData }: PublishProps) {
     }, 1000);
   };
 
+  if (initialData.isArchived) {
+    return (
+      <TooltipButton
+        disabled={isSubmitting}
+        onClick={onRestore}
+        tooltipMessage={"Restore"}
+        variant={"ghost"}
+        className="w-8 h-8 dark:hover:bg-neutral-700 rounded-full"
+        size={"icon"}
+      >
+        <Undo className="w-5 h-5" />
+      </TooltipButton>
+    );
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <TooltipButton
-          TooltipMessage={"Publish"}
-          variant={"ghost"}
-          size={"icon"}
-          className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
-        >
-          <Globe
-            className={`w-5 h-5 ${
-              initialData.isPublished && "text-sky-400 animate-pulse"
-            } `}
-          />
-        </TooltipButton>
+        <span tabIndex={-1}>
+          <TooltipButton
+            tooltipMessage={"Publish"}
+            variant={"ghost"}
+            size={"icon"}
+            className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
+          >
+            <Globe
+              className={`w-5 h-5 ${
+                initialData.isPublished && "text-sky-400 animate-pulse"
+              }`}
+            />
+          </TooltipButton>
+        </span>
       </PopoverTrigger>
-      <PopoverContent className="w-72" align="end" alignOffset={8} forceMount>
+      <PopoverContent
+        className="w-72"
+        align="center"
+        alignOffset={8}
+        forceMount
+      >
         {initialData.isPublished ? (
           <div className="flex flex-col gap-y-4">
             <div className="flex items-center gap-x-2">
@@ -120,7 +160,7 @@ function Publish({ initialData }: PublishProps) {
               </Button>
             </div>
             <TooltipButton
-              TooltipMessage={"Unpublish"}
+              tooltipMessage={"Unpublish"}
               className="w-full text-sm"
               onClick={onUnPublish}
               size={"sm"}

@@ -1,33 +1,23 @@
 "use client";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 
-import {
-  BadgeCheck,
-  CalendarDays,
-  ChevronsLeftRight,
-  LogOut,
-} from "lucide-react";
+import { BadgeCheck, CalendarDays } from "lucide-react";
 
 import { SignOutButton, useUser } from "@clerk/clerk-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 
 export default function UserItem() {
   const { user } = useUser();
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="w-full">
-        <div
-          role="button"
-          className="flex items-center text-sm p-4 w-full hover:bg-primary/5"
-        >
+    <Popover>
+      <PopoverTrigger className="w-full" asChild>
+        <button className="flex items-center text-sm p-4 w-full hover:bg-primary/5">
           <div className="gap-x-2 flex items-center max-w-[150px]">
             <Avatar className="h-7 w-7">
               <AvatarImage src={user?.imageUrl} />
@@ -36,17 +26,17 @@ export default function UserItem() {
               {user?.fullName}&apos;s Notion
             </span>
           </div>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
         className="w-72"
         align="start"
         alignOffset={11}
         forceMount
       >
-        <div className="flex gap-x-5 p-3">
+        <div className="flex gap-x-5">
           <div>
-            <Avatar className="h-8 w-8">
+            <Avatar className="h-10 w-10">
               <AvatarImage src={user?.imageUrl} />
             </Avatar>
           </div>
@@ -83,12 +73,11 @@ export default function UserItem() {
             )}
           </div>
         </div>
-        <DropdownMenuSeparator />
 
-        <DropdownMenuItem asChild className="w-full cursor-pointer">
+        <Button asChild className="w-full h-9 uppercase font-medium mt-5">
           <SignOutButton />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </Button>
+      </PopoverContent>
+    </Popover>
   );
 }
