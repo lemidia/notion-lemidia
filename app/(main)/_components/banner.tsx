@@ -15,7 +15,6 @@ interface BannerProps {
 function Banner({ documentId }: BannerProps) {
   const router = useRouter();
   const remove = useMutation(api.documents.remove);
-  const restore = useMutation(api.documents.restore);
 
   const onRemove = async () => {
     const promise = remove({ id: documentId });
@@ -30,28 +29,11 @@ function Banner({ documentId }: BannerProps) {
     router.replace("/documents");
   };
 
-  const onRestore = () => {
-    const promise = restore({ id: documentId });
-
-    toast.promise(promise, {
-      loading: "Restoring note...",
-      success: "Note restored!",
-      error: "Failed to restore note.",
-    });
-  };
-
   return (
-    <div className="w-full bg-rose-500 text-center text-sm p-2 text-white flex items-center gap-x-2 justify-center">
-      <p>This note is in the Trash.</p>
-      <Button
-        size={"sm"}
-        onClick={onRestore}
-        variant={"default"}
-        className="text-white bg-transparent hover:bg-primary/10 border border-white p-1.5 px-2 h-auto"
-      >
-        Restore Note
-      </Button>
-      <ConfirmModal onConfirm={() => onRemove()}>
+    <div className="w-full bg-rose-500 text-center p-2 text-white flex items-center gap-x-2 justify-center">
+      <p className="font-medium">This note is in the Trash.</p>
+
+      {/* <ConfirmModal onConfirm={() => onRemove()}>
         <Button
           size={"sm"}
           variant={"default"}
@@ -59,7 +41,7 @@ function Banner({ documentId }: BannerProps) {
         >
           Remove Forever
         </Button>
-      </ConfirmModal>
+      </ConfirmModal> */}
     </div>
   );
 }

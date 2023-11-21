@@ -4,7 +4,10 @@ export const useScrollTop = (threshold = 10) => {
   const [scrolled, setScrolled] = useState(false);
 
   const handleScroll = useCallback(() => {
-    if (window.scrollY > threshold) {
+    const marketingPageWrapper = document.getElementById(
+      "marketing-page-wrapper"
+    );
+    if (marketingPageWrapper?.scrollTop! > threshold) {
       setScrolled(true);
     } else {
       setScrolled(false);
@@ -12,8 +15,13 @@ export const useScrollTop = (threshold = 10) => {
   }, [threshold]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const marketingPageWrapper = document.getElementById(
+      "marketing-page-wrapper"
+    );
+
+    marketingPageWrapper?.addEventListener("scroll", handleScroll);
+    return () =>
+      marketingPageWrapper?.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
   return scrolled;

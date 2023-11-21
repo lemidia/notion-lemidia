@@ -97,36 +97,30 @@ function Publish({ initialData }: PublishProps) {
 
   if (initialData.isArchived) {
     return (
-      <TooltipButton
+      <Button
         disabled={isSubmitting}
         onClick={onRestore}
-        tooltipMessage={"Restore"}
         variant={"ghost"}
         className="w-8 h-8 dark:hover:bg-neutral-700 rounded-full"
         size={"icon"}
       >
         <Undo className="w-5 h-5" />
-      </TooltipButton>
+      </Button>
     );
   }
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <span tabIndex={-1}>
-          <TooltipButton
-            tooltipMessage={"Publish"}
-            variant={"ghost"}
-            size={"icon"}
-            className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
-          >
-            <Globe
-              className={`w-5 h-5 ${
-                initialData.isPublished && "text-sky-400 animate-pulse"
-              }`}
-            />
-          </TooltipButton>
-        </span>
+        <Button
+          variant={"ghost"}
+          size={"icon"}
+          className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
+        >
+          <Globe
+            className={`w-5 h-5 ${initialData.isPublished && "text-sky-400"}`}
+          />
+        </Button>
       </PopoverTrigger>
       <PopoverContent
         className="w-72"
@@ -159,15 +153,14 @@ function Publish({ initialData }: PublishProps) {
                 )}
               </Button>
             </div>
-            <TooltipButton
-              tooltipMessage={"Unpublish"}
+            <Button
               className="w-full text-sm"
               onClick={onUnPublish}
               size={"sm"}
               disabled={isSubmitting}
             >
               Unpublish
-            </TooltipButton>
+            </Button>
           </div>
         ) : (
           <div className="flex flex-col items-center text-center">

@@ -57,8 +57,8 @@ const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
     <div
       className={cn(
         "relative w-full group",
-        !url && "h-[5vh]",
-        url && "bg-muted h-[25vh] md:h-[30vh]"
+        !url && "h-[50px]",
+        url && "bg-muted h-[240px] sm:h-[300px] md:h-[320px] lg:h-[360px]"
       )}
     >
       {!!url && <Image src={url} fill alt="Cover" className="object-cover" />}
@@ -91,7 +91,7 @@ const CoverImage = ({ url, storageId, preview }: CoverImageProps) => {
 };
 
 CoverImage.Skeleton = function CoverImageSkeleton() {
-  return <Skeleton className="w-full h-[12vh]" />;
+  return <Skeleton className="w-full h-[150px]" />;
 };
 
 export default CoverImage;

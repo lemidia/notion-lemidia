@@ -8,7 +8,9 @@ export default function LootLayout({
   return (
     <div className="h-full dark:bg-[#1F1F1F]">
       <Navbar />
-      <main className="h-full overflow-x-hidden">{children}</main>
+      <main className="h-full overflow-x-hidden" id="marketing-page-wrapper">
+        {children}
+      </main>
     </div>
   );
 }

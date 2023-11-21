@@ -40,6 +40,7 @@ export default function DocumentsPage() {
       />
       <Image
         src={"/empty-dark.png"}
+        priority
         height={300}
         width={300}
         alt="Empty"
@@ -47,7 +48,7 @@ export default function DocumentsPage() {
       />
 
       <h2 className="text-lg font-medium">
-        Welcome to {user?.firstName}&apos;s Notion
+        Welcome to {user?.lastName}&apos;s Notion
       </h2>
       <Button onClick={onCreate}>
         <PlusCircle className="h-4 w-4 mr-2" />

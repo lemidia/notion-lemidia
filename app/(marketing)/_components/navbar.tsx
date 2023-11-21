@@ -17,33 +17,23 @@ export default function Navbar() {
   return (
     <div
       className={cn(
-        "z-50 bg-background dark:bg-[#1F1F1F] fixed top-0 flex items-center w-full p-5 justify-between",
-        scrolled && "border-b shadow-sm"
+        "z-50 bg-background dark:bg-[#1F1F1F] fixed top-0 flex items-center w-full p-5",
+        scrolled && "shadow-lg"
       )}
     >
       <Logo />
-      <div className="justify-between flex items-center gap-x-2">
+      <div className="flex items-center flex-1 justify-between md:flex-initial md:ml-auto md:gap-x-2">
         {isLoading && <Spinner size="icon" />}
-        {!isAuthenticated && !isLoading && (
+        {!isLoading && !isAuthenticated && (
           <>
             <SignInButton mode="modal">
-              <Button variant="outline" size="sm">
+              <Button variant="default" size="sm">
                 Sign In
               </Button>
             </SignInButton>
-            <SignInButton mode="modal">
-              <Button size="sm">Get Notion Free</Button>
-            </SignInButton>
           </>
         )}
-        {isAuthenticated && !isLoading && (
-          <>
-            <Button variant={"secondary"} asChild>
-              <Link href={"/documents"}>Enter Notion</Link>
-            </Button>
-            <UserButton afterSignOutUrl="/" />
-          </>
-        )}
+        {!isLoading && isAuthenticated && <UserButton afterSignOutUrl="/" />}
         <ModeToggle />
       </div>
     </div>
