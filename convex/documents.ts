@@ -241,6 +241,48 @@ export const remove = mutation({
   },
 });
 
+// Clear all the notes in the trash
+export const clearTrash = mutation({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        message: "Not authenticated",
+      });
+    }
+
+    const userId = identity.subject;
+
+    const documents = await ctx.db
+      .query("documents")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.eq(q.field("isArchived"), true))
+      .order("desc")
+      .collect();
+
+    const promiseArray = documents.map(async (document) => {
+      if (document.userId !== userId) {
+        throw new ConvexError({
+          message: "Unauthorized",
+        });
+      }
+      // Delete the note by given id
+      await ctx.db.delete(document._id);
+      // Schedule deleting storageId for cover-image related to this note
+      if (document.storageId) {
+        await ctx.scheduler.runAfter(0, api.images.deleteStorageId, {
+          storageId: document.storageId,
+        });
+      }
+    });
+
+    await Promise.all(promiseArray);
+
+    return "success";
+  },
+});
+
 export const getSearch = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();

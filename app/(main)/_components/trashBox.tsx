@@ -2,6 +2,7 @@
 
 import ConfirmModal from "@/components/modals/confirmModal";
 import { Spinner } from "@/components/spinner";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
@@ -19,6 +20,7 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
   const router = useRouter();
   const restore = useMutation(api.documents.restore);
   const remove = useMutation(api.documents.remove);
+  const clearTrash = useMutation(api.documents.clearTrash);
 
   const [search, setSearch] = useState("");
 
@@ -60,6 +62,18 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
     router.replace("/documents");
   };
 
+  const onClearTrash = async () => {
+    const promise = clearTrash();
+
+    toast.promise(promise, {
+      loading: "Clear trash...",
+      success: "Trash cleared!",
+      error: "Failed to clear trash.",
+    });
+
+    router.replace("/documents");
+  };
+
   // Fetching related items...
   if (archivedItems === undefined) {
     return (
@@ -70,58 +84,72 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
   }
 
   return (
-    <div className="text-sm min-h-[170px] max-h-[220px] flex flex-col">
-      <div className="flex items-center gap-x-2 bg-background">
-        <Search className="h-6 w-6" />
-        <Input
-          value={search}
-          placeholder="Filter by note title..."
-          onChange={(e) => setSearch(e.target.value)}
-          className="h-8 px-2 focus-visible:ring-1 focus-visible:ring-offset-0 bg-muted text-muted-foreground text-base"
-        />
-      </div>
-      <div className="mt-2 flex-1 overflow-y-scroll">
-        <p className="hidden last:block text-sm text-center text-muted-foreground">
-          No notes in trash box.
-        </p>
-        {filteredDocuments?.map((document) => (
-          <div
-            key={document._id}
-            role="button"
-            onClick={() => onClick(document._id)}
-            className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary p-1"
-          >
-            {document.icon && (
-              <span className="text-lg mr-0.5">{document.icon}</span>
-            )}
-            <span className="truncate pl-1 text-muted-foreground font-medium">
-              {document.title}
-            </span>
+    <>
+      <div className="text-sm min-h-[170px] max-h-[220px] flex flex-col">
+        <div className="flex items-center gap-x-2 bg-background">
+          <Search className="h-6 w-6" />
+          <Input
+            value={search}
+            placeholder="Filter by note title..."
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-8 px-2 focus-visible:ring-1 focus-visible:ring-offset-0 bg-muted text-muted-foreground text-base"
+          />
+        </div>
+        <div className="mt-2 flex-1 overflow-y-scroll">
+          <p className="hidden last:block text-[13px] text-center text-muted-foreground">
+            No notes in trash box.
+          </p>
+          {filteredDocuments?.map((document) => (
+            <div
+              key={document._id}
+              role="button"
+              onClick={() => onClick(document._id)}
+              className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary p-1"
+            >
+              {document.icon && (
+                <span className="text-lg mr-0.5">{document.icon}</span>
+              )}
+              <span className="truncate pl-1 text-muted-foreground font-medium">
+                {document.title}
+              </span>
 
-            <div className="flex items-center ml-auto">
-              <div
-                role="button"
-                className="rounded-sm p-2 text-muted-foreground hover:bg-primary/10"
-                onClick={(e) => onRestore(e, document._id)}
-              >
-                <Undo className="h-4 w-4 text-muted-foreground" />
-              </div>
-              <ConfirmModal onConfirm={() => onRemove(document._id)}>
+              <div className="flex items-center ml-auto">
                 <div
                   role="button"
                   className="rounded-sm p-2 text-muted-foreground hover:bg-primary/10"
+                  onClick={(e) => onRestore(e, document._id)}
                 >
-                  <X
-                    className="h-4 w-4 text-muted-foreground"
-                    strokeWidth={2.6}
-                  />
+                  <Undo className="h-4 w-4 text-muted-foreground" />
                 </div>
-              </ConfirmModal>
+                <ConfirmModal onConfirm={() => onRemove(document._id)}>
+                  <div
+                    role="button"
+                    className="rounded-sm p-2 text-muted-foreground hover:bg-primary/10"
+                  >
+                    <X
+                      className="h-4 w-4 text-muted-foreground"
+                      strokeWidth={2.6}
+                    />
+                  </div>
+                </ConfirmModal>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+
+      {!search && archivedItems.length > 0 && (
+        <ConfirmModal onConfirm={onClearTrash} asChild>
+          <Button
+            disabled={!!search || archivedItems.length === 0}
+            className="bg-red-500 hover:bg-red-500/90 text-white font-bold w-full mt-2"
+          >
+            Clear {archivedItems.length} item
+            {archivedItems.length > 1 && "s"}
+          </Button>
+        </ConfirmModal>
+      )}
+    </>
   );
 }
 

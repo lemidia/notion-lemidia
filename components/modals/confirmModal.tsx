@@ -15,9 +15,10 @@ import { AlertTriangle } from "lucide-react";
 interface ConfirmModalProps {
   children: React.ReactNode;
   onConfirm: () => void;
+  asChild?: boolean;
 }
 
-function ConfirmModal({ children, onConfirm }: ConfirmModalProps) {
+function ConfirmModal({ children, onConfirm, asChild }: ConfirmModalProps) {
   const handleConfirm = (e: React.MouseEvent) => {
     e.stopPropagation();
     onConfirm();
@@ -25,7 +26,10 @@ function ConfirmModal({ children, onConfirm }: ConfirmModalProps) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="" onClick={(e) => e.stopPropagation()}>
+      <AlertDialogTrigger
+        asChild={asChild}
+        onClick={(e) => e.stopPropagation()}
+      >
         {children}
       </AlertDialogTrigger>
       <AlertDialogContent>

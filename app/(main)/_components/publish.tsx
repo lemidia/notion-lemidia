@@ -130,15 +130,20 @@ function Publish({ initialData }: PublishProps) {
       >
         {initialData.isPublished ? (
           <div className="flex flex-col gap-y-4">
-            <div className="flex items-center gap-x-2">
-              <Globe className="text-sky-400 h-5 w-5 text-muted-foreground animate-pulse" />
-              <p className="text-sm font-medium">This note is now public.</p>
+            <div className="flex items-start gap-x-3">
+              <Globe className="text-sky-400 h-7 w-7 text-muted-foreground animate-pulse flex-shrink-0" />
+              <div>
+                <p className="text-sm font-medium">This note is now public.</p>
+                <p className="text-xs text-muted-foreground mt-1.5 leading-5">
+                  Share your note with others using link down below.
+                </p>
+              </div>
             </div>
             <div className="flex items-center">
               <input
                 value={url}
                 type="text"
-                className="flex-1 px-2 text-xs border rounded-l-md h-8  border-r-0"
+                className="flex-1 px-2 text-xs border rounded-l-md h-8  border-r-0 rounded-r-none border-input"
                 disabled
               />
               <Button
