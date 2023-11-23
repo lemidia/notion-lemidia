@@ -20,6 +20,8 @@ import { ImagePlus, MoreVertical, SmilePlus, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCoverImageStore } from "@/hooks/useCoverImageStore";
 import IconPicker from "@/components/icon-picker";
+import { TooltipButton } from "@/components/tooltipButton";
+import { PopoverTrigger } from "@/components/ui/popover";
 
 interface MenuProps {
   documentId: Id<"documents">;
@@ -54,16 +56,19 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant={"ghost"}
-            size={"icon"}
-            className="rounded-full w-8 h-8 flex lg:hidden dark:hover:bg-neutral-700"
-          >
-            <MoreVertical className="h-5 w-5" />
-          </Button>
-        </DropdownMenuTrigger>
+        <TooltipButton tooltipMessage={"More"} asChild>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              className="rounded-full w-8 h-8 flex lg:hidden dark:hover:bg-neutral-700"
+            >
+              <MoreVertical className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+        </TooltipButton>
         <DropdownMenuContent
+          onCloseAutoFocus={(e) => e.preventDefault()}
           className="w-60 flex flex-col items-stretch"
           align="end"
           alignOffset={8}
@@ -76,13 +81,15 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
           >
             <ImagePlus className="h-4 w-4 mr-2" /> Add Cover
           </DropdownMenuItem>
-          <IconPicker asChild onChange={handleIconChange}>
-            <Button
-              className="p-2 h-[34px] bg-background text-white hover:bg-muted w-full justify-start text-primary font-normal"
-              disabled={!!icon}
-            >
-              <SmilePlus className="h-4 w-4 mr-2" /> Add Emoji
-            </Button>
+          <IconPicker onChange={handleIconChange}>
+            <PopoverTrigger asChild>
+              <Button
+                className="p-2 h-[34px] bg-background text-white hover:bg-muted w-full justify-start text-primary font-normal focus-visible:ring-0 focus-visible:ring-offset-0"
+                disabled={!!icon}
+              >
+                <SmilePlus className="h-4 w-4 mr-2" /> Add Emoji
+              </Button>
+            </PopoverTrigger>
           </IconPicker>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -97,36 +104,49 @@ function NavMenu({ documentId, storageId, icon, isArchived }: MenuProps) {
 
       {/* for Desktop */}
       <div className="hidden lg:flex items-center gap-x-1.5">
-        <Button
-          disabled={!!storageId}
-          onClick={onOpen}
-          variant={"ghost"}
-          size={"icon"}
-          className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
-        >
-          <ImagePlus className="h-5 w-5" />
-        </Button>
-        <IconPicker asChild onChange={handleIconChange}>
+        <TooltipButton tooltipMessage={"Add Cover"} asChild>
           <Button
-            disabled={!!icon}
+            disabled={!!storageId}
+            onClick={onOpen}
             variant={"ghost"}
             size={"icon"}
+            aria-label="add cover"
             className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
           >
-            <SmilePlus className="h-5 w-5" />
+            <ImagePlus className="h-5 w-5" />
           </Button>
+        </TooltipButton>
+
+        <IconPicker onChange={handleIconChange}>
+          <TooltipButton tooltipMessage={"Add Emoji"} asChild>
+            <PopoverTrigger asChild>
+              <Button
+                disabled={!!icon}
+                variant={"ghost"}
+                size={"icon"}
+                aria-label="add emoji"
+                className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
+              >
+                <SmilePlus className="h-5 w-5" />
+              </Button>
+            </PopoverTrigger>
+          </TooltipButton>
         </IconPicker>
 
         <div className="h-6 w-[1.3px] rounded-md bg-muted-foreground" />
-        <Button
-          disabled={isArchived}
-          onClick={onArchive}
-          variant={"ghost"}
-          size={"icon"}
-          className="rounded-full w-8 h-8 hover:text-orange-600 dark:hover:bg-neutral-700"
-        >
-          <Trash className="h-5 w-5" />
-        </Button>
+
+        <TooltipButton tooltipMessage={"Soft Delete"} asChild>
+          <Button
+            disabled={isArchived}
+            onClick={onArchive}
+            variant={"ghost"}
+            size={"icon"}
+            aria-label="soft delete"
+            className="rounded-full w-8 h-8 hover:text-orange-600 dark:hover:bg-neutral-700"
+          >
+            <Trash className="h-5 w-5" />
+          </Button>
+        </TooltipButton>
       </div>
     </>
   );

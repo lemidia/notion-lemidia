@@ -32,7 +32,7 @@ function Trash({ isMobile, isCollapsed }: TrashProps) {
         <PopoverContent
           onOpenAutoFocus={(e) => e.preventDefault()}
           side={isMobile ? "bottom" : "right"}
-          className="p-2 w-72 min-h-[190px] mx-2"
+          className="p-0 w-72 min-h-[190px] mx-2 border border-input overflow-hidden"
         >
           <TrashBox archivedItems={archivedItems} />
         </PopoverContent>

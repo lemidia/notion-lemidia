@@ -14,6 +14,11 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Check, Copy, Globe, Undo } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { TooltipButton } from "@/components/tooltipButton";
 
 interface PublishProps {
@@ -97,31 +102,36 @@ function Publish({ initialData }: PublishProps) {
 
   if (initialData.isArchived) {
     return (
-      <Button
-        disabled={isSubmitting}
-        onClick={onRestore}
-        variant={"ghost"}
-        className="w-8 h-8 dark:hover:bg-neutral-700 rounded-full"
-        size={"icon"}
-      >
-        <Undo className="w-5 h-5" />
-      </Button>
+      <TooltipButton tooltipMessage={"Restore"} asChild>
+        <Button
+          disabled={isSubmitting}
+          onClick={onRestore}
+          variant={"ghost"}
+          className="w-8 h-8 dark:hover:bg-neutral-700 rounded-full"
+          size={"icon"}
+        >
+          <Undo className="w-5 h-5" />
+        </Button>
+      </TooltipButton>
     );
   }
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={"ghost"}
-          size={"icon"}
-          className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
-        >
-          <Globe
-            className={`w-5 h-5 ${initialData.isPublished && "text-sky-400"}`}
-          />
-        </Button>
-      </PopoverTrigger>
+      <TooltipButton tooltipMessage={"Publish"} asChild>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            className="rounded-full w-8 h-8 dark:hover:bg-neutral-700"
+          >
+            <Globe
+              className={`w-5 h-5 ${initialData.isPublished && "text-sky-400"}`}
+            />
+          </Button>
+        </PopoverTrigger>
+      </TooltipButton>
+
       <PopoverContent
         className="w-72"
         align="center"

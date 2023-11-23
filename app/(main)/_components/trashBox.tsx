@@ -85,17 +85,17 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
 
   return (
     <>
-      <div className="text-sm min-h-[170px] max-h-[220px] flex flex-col">
-        <div className="flex items-center gap-x-2 bg-background">
-          <Search className="h-6 w-6" />
+      <div className="text-sm min-h-[170px] max-h-[242px] flex flex-col">
+        <div className="flex items-center bg-background border-b border-input px-2.5 py-1.5">
+          <Search className="h-4 w-4 text-muted-foreground" />
           <Input
             value={search}
             placeholder="Filter by note title..."
             onChange={(e) => setSearch(e.target.value)}
-            className="h-8 px-2 focus-visible:ring-1 focus-visible:ring-offset-0 bg-muted text-muted-foreground text-base"
+            className="h-8 px-2 text-muted-foreground text-sm focus-visible:ring-0 focus-visible:ring-offset-0 border-0"
           />
         </div>
-        <div className="mt-2 flex-1 overflow-y-scroll">
+        <div className="my-2 flex-1 overflow-y-scroll px-2">
           <p className="hidden last:block text-[13px] text-center text-muted-foreground">
             No notes in trash box.
           </p>
@@ -139,15 +139,17 @@ function TrashBox({ archivedItems }: TrashBoxProps) {
       </div>
 
       {!search && archivedItems.length > 0 && (
-        <ConfirmModal onConfirm={onClearTrash} asChild>
-          <Button
-            disabled={!!search || archivedItems.length === 0}
-            className="bg-red-500 hover:bg-red-500/90 text-white font-bold w-full mt-2"
-          >
-            Clear {archivedItems.length} item
-            {archivedItems.length > 1 && "s"}
-          </Button>
-        </ConfirmModal>
+        <div className="px-2">
+          <ConfirmModal onConfirm={onClearTrash} asChild>
+            <Button
+              disabled={!!search || archivedItems.length === 0}
+              className="bg-red-500 hover:bg-red-500/90 text-white font-bold w-full mb-2"
+            >
+              Clear {archivedItems.length} item
+              {archivedItems.length > 1 && "s"}
+            </Button>
+          </ConfirmModal>
+        </div>
       )}
     </>
   );

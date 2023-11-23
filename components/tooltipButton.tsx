@@ -1,41 +1,27 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { VariantProps } from "class-variance-authority";
 
-interface TooltipButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+interface TooltipButtonProps {
+  children: React.ReactNode;
   tooltipMessage: string | number;
+  asChild?: boolean;
 }
 
 export function TooltipButton({
   children,
   tooltipMessage,
-  variant,
-  className,
-  size,
-  ...props
+  asChild,
 }: TooltipButtonProps) {
   return (
-    <TooltipProvider delayDuration={400}>
+    <TooltipProvider delayDuration={500}>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant={variant || "default"}
-            size={size || "default"}
-            className={className}
-            {...props}
-          >
-            {children}
-          </Button>
-        </TooltipTrigger>
+        <TooltipTrigger asChild={asChild}>{children}</TooltipTrigger>
         <TooltipContent>
           <p>{tooltipMessage}</p>
         </TooltipContent>
